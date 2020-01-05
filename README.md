@@ -1,2 +1,2 @@
 # recipe-api-app
-Just learning django rest framework. Never mind
+Smart Ad backend
