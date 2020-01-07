@@ -28,3 +28,6 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(models.User, UserAdmin)
+admin.site.register(models.Advertising)
+admin.site.register(models.Device)
+admin.site.register(models.Audience)

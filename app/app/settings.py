@@ -24,7 +24,7 @@ SECRET_KEY = '$%(^4au9npz2nyst7z_0ht)vu7f_4eefq3a)&6u^)2d9pfu$n0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.0.2.2', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'advertising',
     'core',
     'user',
 ]
@@ -119,5 +120,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = 'vol/web/media/'
+STATIC_ROOT = 'vol/web/static'
 
 AUTH_USER_MODEL = 'core.User'

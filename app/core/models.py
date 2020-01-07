@@ -1,5 +1,15 @@
+import uuid
+import os
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.conf import settings
+
+
+def advertising_image_file_path(instance, filename):
+    """generate filepath for new advertising image"""
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+    return os.path.join('uploads/advertising/', filename)
 
 
 class UserManager(BaseUserManager):
@@ -32,3 +42,45 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     objects = UserManager()
     USERNAME_FIELD = "email"
+
+
+class Audience(models.Model):
+    """Model that represents advertising audience"""
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Device(models.Model):
+    """Device object for advertising"""
+    name = models.CharField(max_length=255)
+    longitude = models.CharField(max_length=20, default='0.000000')
+    latitude = models.CharField(max_length=20, default='0.000000')
+    is_active = models.BooleanField(default=False)
+    key = models.CharField(default='', max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class Advertising(models.Model):
+    """Advertising object"""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    image = models.ImageField(null=True, upload_to=advertising_image_file_path)
+    devices = models.ManyToManyField('Device')
+    name = models.CharField(max_length=255, default='')
+    audiences = models.ManyToManyField('Audience')
+    fromDate = models.DateTimeField(auto_now_add=True, blank=True)
+    toDate = models.DateTimeField(auto_now_add=True, blank=True)
+    seconds = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
