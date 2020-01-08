@@ -101,5 +101,5 @@ class PrivateAdvertisingApiTest(TestCase):
         advertising.audiences.add(sample_audience())
         url = detail_url(advertising.id)
         res = self.client.get(url)
-        serializer = RecipeDetailSerializer(advertising)
+        serializer = AdvertisingDetailSerializer(advertising)
         self.assertEqual(res.data, serializer.data)
