@@ -47,7 +47,7 @@ class PrivateAudienceApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def create_audience_successful(self):
+    def test_create_audience_successful(self):
         """Test create the audience"""
         payload = {
             'name': 'woman'
@@ -56,8 +56,8 @@ class PrivateAudienceApiTests(TestCase):
         exists = Audience.objects.filter(
             name=payload['name']
         ).exists()
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertTrue(exists)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
     def test_create_audience_invalid(self):
         """Test creating a new audience with invalid payload"""

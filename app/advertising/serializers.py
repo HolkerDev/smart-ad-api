@@ -33,7 +33,7 @@ class AdvertisingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Advertising
-        fields = ('id', 'name', 'devices', 'audiences', 'fromDate', 'toDate', 'seconds')
+        fields = ('id', 'name', 'devices', 'audiences', 'fromDate', 'toDate', 'seconds', 'image')
         read_only_fields = ('id',)
 
 
