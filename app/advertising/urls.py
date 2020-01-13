@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register('devices', views.DeviceViewSet)
 router.register('audiences', views.AudienceViewSet)
 router.register('advertising', views.AdvertisingViewSet)
+router.register('devices-all', views.DeviceAllViewSet)
 
 app_name = 'advertising'
 

@@ -22,6 +22,16 @@ class DeviceViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.Creat
         serializer.save(user=self.request.user, key=secrets.token_urlsafe(16))
 
 
+class DeviceAllViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+    queryset = Device.objects.all()
+    serializer_class = serializers.DeviceAllSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return self.queryset.order_by('-name')
+
+
 class AudienceViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
     """Manage audiences in the database"""
     queryset = Audience.objects.all()
@@ -62,10 +72,10 @@ class AdvertisingViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         if devices:
             devices_ids = self._params_to_ints(devices)
-            queryset = queryset.filter(tags__id__in=devices)
+            queryset = queryset.filter(devices__id__in=devices_ids)
         if audiences:
             audiences_ids = self._params_to_ints(audiences)
-            queryset = queryset.filter(ingredients__id__in=audiences_ids)
+            queryset = queryset.filter(audiences__id__in=audiences_ids)
 
         return queryset.filter(user=self.request.user)
 

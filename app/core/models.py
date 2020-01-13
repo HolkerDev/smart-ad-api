@@ -78,8 +78,8 @@ class Advertising(models.Model):
     devices = models.ManyToManyField('Device')
     name = models.CharField(max_length=255, default='')
     audiences = models.ManyToManyField('Audience')
-    fromDate = models.DateTimeField(auto_now_add=True, blank=True)
-    toDate = models.DateTimeField(auto_now_add=True, blank=True)
+    fromDate = models.DateTimeField(blank=True)
+    toDate = models.DateTimeField(blank=True)
     seconds = models.IntegerField(default=0)
 
     def __str__(self):

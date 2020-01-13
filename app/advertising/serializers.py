@@ -11,6 +11,13 @@ class DeviceSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'key', 'is_active')
 
 
+class DeviceAllSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Device
+        fields = ('id', 'name')
+        read_only_fields = ('id', 'name')
+
+
 class AudienceSerializer(serializers.ModelSerializer):
     """Serialize an audience object"""
 

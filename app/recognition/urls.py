@@ -5,4 +5,5 @@ app_name = 'recognition'
 
 urlpatterns = [
     path('activate', views.activate_device, name='activate'),
+    path('recognize-person', views.recognize_person, name='recognize-person'),
 ]
