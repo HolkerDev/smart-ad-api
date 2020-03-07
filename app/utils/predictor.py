@@ -3,6 +3,8 @@ import numpy as np
 from keras.models import load_model
 from keras.preprocessing import image
 import cv2
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 def convert_image(path):
@@ -35,31 +37,15 @@ class GlassesPredictor(metaclass=Singleton):
     def predict(self, image_path):
         """Reads the image and returns response"""
 
-        # img = cv2.imread(image_path)
-        #
-        # minisize = (img.shape[1], img.shape[0])
-        # miniframe = cv2.resize(img, minisize)
-        #
-        # faces = self.cascade.detectMultiScale(miniframe)
-        #
-        # for f in faces:
-        #     x, y, w, h = [v for v in f]
-        #     cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 255))
-        #
-        #     sub_face = img[y:y + h, x:x + w]
-        #     face_file_name = "faces/face_" + str(y) + ".jpg"
-        #     cv2.imwrite(face_file_name, sub_face)
-        # print(faces)
-
         image_to_predict = convert_image(image_path)
 
         result = self.model.predict(image_to_predict)
         print(f"LOG : PREDICT GLASSES RESULT : {result}")
 
         if result >= 0.5:
-            return 'with glasses'
+            return 'With glasses'
         else:
-            return 'without glasses'
+            return 'Without glasses'
 
 
 class GenderPredictor(metaclass=Singleton):
@@ -77,6 +63,6 @@ class GenderPredictor(metaclass=Singleton):
         print(f"LOG : PREDICT GENDER RESULT : {result}")
 
         if result >= 0.5:
-            return 'woman'
+            return 'Women'
         else:
-            return 'man'
+            return 'Men'

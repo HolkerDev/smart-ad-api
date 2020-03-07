@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from core.models import Device, Advertising
+from core.models import Device, Advertising, Audience
 from PIL import Image
 from utils.predictor import GlassesPredictor, GenderPredictor
 from rest_framework import status
@@ -58,11 +58,23 @@ def recognize_person(request):
             "glasses": glasses_result,
             "gender": gender_result
         }
-        advertising = Advertising.objects.all().filter(devices__in=[device.id])
-        if advertising:
-            print(f"found advertising {advertising[0].image}")
-            return Response(data={"response": f"127.0.0.1:8000/media/{advertising[0].image}"},
-                            status=status.HTTP_200_OK)
+        # audience_glasses = Audience.objects.all().filter(name=glasses_result)
+        audience_glasses = get_object_or_404(Audience, name=glasses_result)
+        print(audience_glasses.id)
+        audience_gender = get_object_or_404(Audience, name=gender_result)
+        print(audience_gender.id)
+        if audience_glasses and audience_gender:
+            advertising = Advertising.objects.all().filter(devices__in=[device.id],
+                                                           audiences__in=[audience_gender.id, audience_glasses.id])
+            if advertising:
+                print(f"found advertising {advertising[0].image}")
+                return Response(data={"response": f"127.0.0.1:8000/media/{advertising[0].image}"},
+                                status=status.HTTP_200_OK)
+            else:
+                print(f"[INFO] System doesnt have ad for this set")
+                return Response(data={"response": f"127.0.0.1:8000/media/default/here_your_ad.jpg"},
+                                status=status.HTTP_200_OK)
         else:
+            print(f"[ERROR] No type for this audiences")
             return Response(data={"response": f"127.0.0.1:8000/media/default/here_your_ad.jpg"},
                             status=status.HTTP_200_OK)

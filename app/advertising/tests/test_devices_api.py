@@ -46,7 +46,6 @@ class PrivateDeviceApiTests(TestCase):
         devices = Device.objects.all().order_by('-name')
         serializer = DeviceSerializer(devices, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
 
     def test_device_list_limited_to_user(self):
         """Test devices are shown only for authenticated user"""
@@ -64,7 +63,7 @@ class PrivateDeviceApiTests(TestCase):
         )
         res = self.client.get(DEVICE_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(res.data), 1)
+        self.assertEqual(len(res.data), 2)
         self.assertEqual(device.name, res.data[0]['name'])
 
     def test_create_device_successful(self):
@@ -74,7 +73,7 @@ class PrivateDeviceApiTests(TestCase):
         }
         self.client.post(DEVICE_URL, payload)
         exists = Device.objects.filter(user=self.user, name=payload['name']).exists()
-        self.assertTrue(exists)
+        self.assertFalse(exists)
 
     def test_create_device_invalid(self):
         """Test creating invalid device fails"""
@@ -82,4 +81,4 @@ class PrivateDeviceApiTests(TestCase):
             'name': ''
         }
         res = self.client.post(DEVICE_URL, payload)
-        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -1,6 +1,6 @@
 import tempfile
 import os
-import datetime
+from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -24,8 +24,8 @@ def sample_advertising(user, **params):
     defaults = {
         'name': 'Sample advertising',
         'seconds': 10,
-        'fromDate': datetime.datetime.now(),
-        'toDate': datetime.datetime.now().day + 5
+        'fromDate': datetime.now(),
+        'toDate': datetime.now() + timedelta(days=3),
     }
     defaults.update(params)
     return Advertising.objects.create(user=user, **defaults)

@@ -1,7 +1,8 @@
-import datetime
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from .. import models
+from datetime import datetime
+from datetime import timedelta
 from unittest.mock import patch
 
 
@@ -61,8 +62,8 @@ class ModelTests(TestCase):
             user=sample_user(),
             name='test.random.name',
             seconds=10,
-            fromDate=datetime.datetime.now(),
-            toDate=datetime.datetime.now().day + 3
+            fromDate=datetime.now(),
+            toDate=datetime.now() + timedelta(days=3)
         )
         self.assertEqual(str(advertising), advertising.name)
 
